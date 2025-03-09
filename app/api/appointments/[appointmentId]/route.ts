@@ -29,6 +29,9 @@ function toDoctorDTOMapper(doctor: Doctor): DoctorDTO {
     phoneNumber: doctor.phoneNumber,
     specialty: doctor.specialty,
     avatarImage: doctor.avatarImage,
+    experience: doctor.experience,
+    startWorkingDate: doctor.startWorking,
+    email: doctor.email,
   };
 }
 function toPatientDTOMapper(patient: Patient): PatientDTO {

@@ -75,7 +75,6 @@ export default function CustomCommandSearch({
     const windowResizer = () => {
       if (!triggerRef.current) return;
       setTriggerWidth(triggerRef.current.offsetWidth);
-      console.log("resized");
     };
     windowResizer();
 
@@ -84,7 +83,7 @@ export default function CustomCommandSearch({
       window.removeEventListener("resize", windowResizer);
     };
   }, [open, enableMaxContent]);
-  console.log({ selectedValue });
+
   return (
     <CommandContext.Provider
       value={{ onClose: () => setOpen(false), selectedValue }}

@@ -114,14 +114,14 @@ export const registerPatient = async (
   }
 };
 
-type DeleteAppointmentResponse =
-  | { success: true }
-  | { success: false; error: NetworkError["error"] };
+export type CancelAppointmentResponse = Promise<
+  { success: true } | { success: false; error: NetworkError["error"] }
+>;
 
 export const cancelPatientAppointment = async (
   prevState: unknown,
   appointmentId: string
-): Promise<DeleteAppointmentResponse> => {
+): CancelAppointmentResponse => {
   try {
     const session = await getSessionCookie();
     console.log({ appointmentId });

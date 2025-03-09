@@ -55,7 +55,7 @@ import { useFileUploadBox } from "../contexts/file-upload-box";
 import { useRouter } from "next/navigation";
 
 import { UserDTO } from "@/lib/types/user";
-import DoctorBadge from "../health-care/doctor-badge";
+import UserBadge from "../health-care/user-badge";
 
 export default function PatientRegisterForm({ user }: { user: UserDTO }) {
   const router = useRouter();
@@ -360,13 +360,13 @@ export default function PatientRegisterForm({ user }: { user: UserDTO }) {
                       placeholder="Select Doctor"
                     >
                       <SelectItem value="ms@example.com">
-                        <DoctorBadge doctorName={"mohamed"} />
+                        <UserBadge userName={"mohamed"} />
                       </SelectItem>
                       <SelectItem value="mss@example.com">
-                        <DoctorBadge doctorName={"ahmed"} />
+                        <UserBadge userName={"ahmed"} />
                       </SelectItem>
                       <SelectItem value="mvagfs@example.com">
-                        <DoctorBadge doctorName={"ali"} />
+                        <UserBadge userName={"ali"} />
                       </SelectItem>
                     </CustomSelect>
                     <FormMessage />
@@ -574,7 +574,6 @@ export default function PatientRegisterForm({ user }: { user: UserDTO }) {
                 control={form.control}
                 name="privacyConsent"
                 render={({ field }) => {
-                  console.log(field.value);
                   return (
                     <FormItem>
                       <FormControl>

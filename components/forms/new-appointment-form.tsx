@@ -1,6 +1,6 @@
 "use client";
 
-import { handleErrorMessage } from "@/lib/utils";
+import { getFileUrl, handleErrorMessage } from "@/lib/utils";
 import {
   Form,
   FormControl,
@@ -28,7 +28,7 @@ import { createAppointment } from "@/lib/actions/appointmentActions";
 
 import { documentErrorMessages } from "@/lib/data";
 import { useRouter } from "next/navigation";
-import DoctorBadge from "../health-care/doctor-badge";
+import UserBadge from "../health-care/user-badge";
 import { Doctor } from "@/lib/types/doctor";
 
 const allowedDays = [5, 10, 15]; // Allow the 5th, 10th, and 15th of every month
@@ -105,7 +105,6 @@ export function NewAppointmentForm({ patientId, doctors }: Props) {
                   selectedValue={field.value}
                   enableMaxContent
                   filter={(value, search) => {
-                    console.log({ value, search });
                     const currentDoctorItem = doctors.find(
                       (d) => d.$id === value
                     ); // object
@@ -125,7 +124,10 @@ export function NewAppointmentForm({ patientId, doctors }: Props) {
                         );
                       }}
                     >
-                      <DoctorBadge doctorName={doctor.doctorName} />
+                      <UserBadge
+                        userName={doctor.doctorName}
+                        src={getFileUrl(doctor.avatarImage)}
+                      />
                     </CommandItem>
                   ))}
                 </CustomCommandSearch>

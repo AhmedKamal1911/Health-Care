@@ -76,20 +76,17 @@ export async function createOTPChallenge(): CreateOTPChallengeResponse {
 }
 export async function completeOTPChallenge(
   prevState: unknown,
-  data: {
-    challengeId: string;
-    OTP: string;
-  }
+  formData: FormData
 ): Promise<{ status: string } | undefined> {
+  const challengeId = formData.get("challengeId") as string;
+  const otpValue = formData.get("OTP") as string;
   try {
+    console.log({ challengeId, otpValue });
     const session = await getSessionCookie();
     const { account } = createClientSession(session);
-    console.log({ data });
-    const response = await account.updateMfaChallenge(
-      data.challengeId, // challengeId
-      data.OTP // otp
-    );
-    console.log(response);
+    const response = await account.updateMfaChallenge(challengeId, otpValue);
+    console.log({ response, session, account });
+
     redirect("/dashboard/admin", RedirectType.replace);
   } catch (error) {
     console.log(error);

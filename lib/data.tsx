@@ -38,7 +38,7 @@ export const documentErrorMessages: { [status: number]: string } = {
   401: "Unauthorized. Please log in and try again.",
   403: "Access denied. You do not have the necessary permissions.",
   404: "Collection not found. Please check the collection ID.",
-  409: "A document with the same ID already exists.",
+  409: "A User with the same email or phone number already exists.",
   500: "Server error. Please try again later.",
 };
 

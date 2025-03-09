@@ -12,7 +12,6 @@ export default function CounterRedirect({ duration = 10, path }: Props) {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log("from interval");
       if (!countDownValue) {
         clearInterval(intervalId);
         router.replace(path);

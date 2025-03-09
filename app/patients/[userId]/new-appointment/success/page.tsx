@@ -1,7 +1,8 @@
 import { Brand } from "@/components/health-care";
 import CounterRedirect from "@/components/health-care/counter-redirect";
-import DoctorBadge from "@/components/health-care/doctor-badge";
+import UserBadge from "@/components/health-care/user-badge";
 import getAppointment from "@/lib/queries/appointment";
+import { getFileUrl } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, CircleCheck } from "lucide-react";
 
@@ -34,9 +35,9 @@ export default async function SuccessPage({
           Requested appointment details:
         </span>
         {doctor && (
-          <DoctorBadge
-            doctorName={doctor.doctorName}
-            // src={doctor.avatarImage}
+          <UserBadge
+            userName={doctor.doctorName}
+            src={getFileUrl(doctor.avatarImage)}
           />
         )}
 

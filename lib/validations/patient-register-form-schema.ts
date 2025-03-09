@@ -18,6 +18,7 @@ export const documentFileSchema = z
   .refine((file) => file.size <= 5 * 1024 * 1024, {
     message: "identification document size must be less than or equal 5mb",
   });
+
 export const patientRegisterFormSchema = z.object({
   fullName: z.string().min(2, {
     message: "Username must be at least 2 characters.",

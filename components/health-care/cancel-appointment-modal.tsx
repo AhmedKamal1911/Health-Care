@@ -13,6 +13,7 @@ import {
 import { Button } from "../ui/button";
 import { cancelPatientAppointment } from "@/lib/actions/patientActions";
 import { AppointmentStatus } from "@/lib/types/types";
+import { TriangleAlert } from "lucide-react";
 
 type Props = {
   appointmentId: string;
@@ -40,10 +41,11 @@ export default function CancelAppointmentModal({
         <AlertDialogTrigger asChild>
           <Button
             disabled={appointmentStatus === "cancelled"}
-            variant="destructive"
-            className="capitalize p-2 size-fit"
+            variant={"destructive"}
+            className="flex gap-2 items-center px-2"
           >
-            cancel
+            <TriangleAlert className="size-5" />
+            <span className="font-bold cursor-pointer">Cancel</span>
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

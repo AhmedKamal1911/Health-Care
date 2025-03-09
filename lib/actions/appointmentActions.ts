@@ -17,11 +17,12 @@ import {
 } from "../validations/new-appointment-schema";
 import { Appointment } from "../types/appointment";
 
-import { Response } from "../types/types";
+import { NetworkError, Response } from "../types/types";
 import { Permission, Role } from "node-appwrite";
 
 import { getSessionCookie } from "../helpers/auth";
 import { revalidatePath } from "next/cache";
+import { CancellationSchema } from "../validations/admin-actions-schema";
 
 type AppointmentResponse = Response<{ id: string }, NewAppointmentSchemaTypes>;
 
@@ -83,7 +84,9 @@ type PatientAppointmentResponse = Response<
 export const createPatientAppointment = async (
   appointment: PatientScheduleAppointmentTypes
 ): PatientAppointmentResponse => {
+  console.log({ appointment });
   const result = PatientScheduleAppointmentSchema.safeParse(appointment);
+  console.log({ result });
   if (!result.success) {
     return {
       status: "validationError",
@@ -110,5 +113,89 @@ export const createPatientAppointment = async (
       status: "NetworkError",
       error: { status, message },
     };
+  }
+};
+
+type ScheduleAppointmentResponse = Promise<
+  { status: "success" } | NetworkError | undefined
+>;
+// THIS ACTION IS BY SYSTEM TO SCHEDULE APPOINTMENT
+export const scheduleAppointment = async (
+  prevState,
+  appointmentId: string
+): ScheduleAppointmentResponse => {
+  try {
+    const { databases } = createAdminClient();
+    await databases.updateDocument(
+      DATABASE_ID,
+      APPOINTMENT_COLLECTION_ID,
+      appointmentId,
+      {
+        status: "scheduled",
+      }
+    );
+    revalidatePath("/dashboard/admin");
+    return { status: "success" };
+  } catch (error) {
+    const { status, message } = handleErrorMessage(error);
+    return {
+      status: "NetworkError",
+      error: { status, message },
+    };
+  }
+};
+type DeleteAppointmentResponse = Promise<{ status: "success" } | NetworkError>;
+// THIS ACTION IS BY SYSTEM to Delete Appointment
+export const adminDeleteAppointment = async (
+  prevState,
+  appointmentId: string
+): DeleteAppointmentResponse => {
+  try {
+    console.log({ appointmentId });
+    const { databases } = createAdminClient();
+
+    const result = await databases.deleteDocument(
+      DATABASE_ID,
+      APPOINTMENT_COLLECTION_ID,
+      appointmentId
+    );
+    console.log({ result });
+    revalidatePath("/dashboard/admin");
+    return { status: "success" };
+  } catch (error) {
+    const { message, status, statusText } = handleErrorMessage(error);
+    return { error: { message, status, statusText }, status: "NetworkError" };
+  }
+};
+
+// THIS ACTION IS BY SYSTEM TO CANCEL APPOINTMENT
+type CancelAppointmentResponse = Response<undefined, CancellationSchema>;
+export const adminCancelAppointment = async (
+  cancellationReason: string,
+  patientId: string,
+  appointmentId: string
+): CancelAppointmentResponse => {
+  try {
+    const { databases } = createAdminClient();
+    console.log({ appointmentId, cancellationReason });
+
+    const result = await databases.updateDocument<Appointment>(
+      DATABASE_ID,
+      APPOINTMENT_COLLECTION_ID,
+      appointmentId,
+      {
+        cancellationReason: cancellationReason,
+        status: "cancelled",
+        patient: patientId,
+      }
+    );
+
+    revalidatePath("/dashboard/patient");
+    revalidatePath("/dashboard/admin");
+
+    return { data: undefined, status: "success" };
+  } catch (error) {
+    const { message, status, statusText } = handleErrorMessage(error);
+    return { error: { message, status, statusText }, status: "NetworkError" };
   }
 };

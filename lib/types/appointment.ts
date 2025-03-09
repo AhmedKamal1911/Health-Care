@@ -14,6 +14,7 @@ export type Appointment = Models.Document & {
   appointmentDate: string;
   patient: Patient;
   status: AppointmentStatus;
+  cancellationReason?: string;
 };
 
 export const appointmentDTOSchema = z.object({
@@ -23,7 +24,7 @@ export const appointmentDTOSchema = z.object({
   doctor: z
     .object({
       id: z.string(),
-      avatarImage: z.string().nullable().optional(),
+      avatarImage: z.string(),
       specialty: z.string(),
       phoneNumber: z.string(),
       doctorName: z.string(),

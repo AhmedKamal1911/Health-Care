@@ -1,4 +1,4 @@
-import { PatientAppointmentsTable } from "@/components/health-care/patient-appointments-table";
+import { PatientAppointmentsTable } from "@/components/tables/patient-table/patient-appointments-table";
 
 import {
   APPOINTMENT_COLLECTION_ID,
@@ -8,13 +8,14 @@ import {
   DOCTOR_COLLECTION_ID,
 } from "@/lib/appwrite";
 import { getSessionCookie } from "@/lib/helpers/auth";
+import { Appointment } from "@/lib/types/appointment";
 import { Doctor } from "@/lib/types/doctor";
 
 export default async function PatientPage() {
   const session = await getSessionCookie();
   const { databases } = createClientSession(session);
   const { databases: adminDatabases } = createAdminClient();
-  const userAppointments = await databases.listDocuments(
+  const userAppointments = await databases.listDocuments<Appointment>(
     DATABASE_ID, // databaseId
     APPOINTMENT_COLLECTION_ID // collectionId
   );
@@ -23,9 +24,8 @@ export default async function PatientPage() {
     DATABASE_ID, // databaseId
     DOCTOR_COLLECTION_ID // collectionId
   );
-
+  console.log({ doctor: userAppointments.documents });
   const { documents } = userAppointments;
-  console.log({ documents, doctors });
 
   return (
     <main className="flex flex-col flex-1">

@@ -98,3 +98,7 @@ export function generateTextFallback(name: string) {
     return `${textFallback[0][0]}${textFallback[0][1]}`;
   }
 }
+
+export function getFileUrl(imageId: string) {
+  return `${process.env.NEXT_PUBLIC_BASE_URL}/api/files/${imageId}`;
+}

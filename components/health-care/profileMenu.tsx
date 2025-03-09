@@ -1,4 +1,4 @@
-import { LifeBuoy, Settings, User } from "lucide-react";
+import { ChevronDown, LifeBuoy, Settings, User } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -12,17 +12,20 @@ import {
 import CustomAvatar from "./custom-avatar";
 import { generateTextFallback } from "@/lib/utils";
 import { LogoutButton } from "./logout-button";
+import Link from "next/link";
 
 type Props = {
   accountName: string;
+  email: string;
 };
 
-export default function ProfileMenu({ accountName }: Props) {
+export default function ProfileMenu({ accountName, email }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="text-white flex items-center gap-2">
+        <button className="text-white flex items-center gap-4">
           <CustomAvatar
+            className="size-12"
             fallback={
               <span className="capitalize">
                 {generateTextFallback(accountName)}
@@ -30,16 +33,20 @@ export default function ProfileMenu({ accountName }: Props) {
             }
             alt="user profile image"
           />
-          {accountName}
+          <div className="flex flex-col items-start">
+            <span className="font-bold capitalize">{accountName}</span>
+            <span className="text-gray-400"> {email}</span>
+          </div>
+          <ChevronDown />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-darkPrimary">
+      <DropdownMenuContent className="w-60 bg-darkPrimary">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <User />
-            <span>Profile</span>
+            <Link href={"/dashboard/profile"}>Profile</Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem>

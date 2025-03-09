@@ -1,6 +1,6 @@
 "use client";
 
-import { handleErrorMessage } from "@/lib/utils";
+import { getFileUrl, handleErrorMessage } from "@/lib/utils";
 import {
   Form,
   FormControl,
@@ -27,7 +27,7 @@ import CalendarPopover from "./calendar-popover";
 
 import { documentErrorMessages } from "@/lib/data";
 
-import DoctorBadge from "./doctor-badge";
+import UserBadge from "./user-badge";
 import { Appointment } from "@/lib/types/appointment";
 import { updatePatientAppointment } from "@/lib/actions/patientActions";
 import { Doctor } from "@/lib/types/doctor";
@@ -98,7 +98,7 @@ export function UpdateAppointmentForm({
       }
     } catch (error) {
       const { message, status } = handleErrorMessage(error);
-      console.log("Unexpected error:", { error: message, status });
+
       form.setError("root", {
         message:
           documentErrorMessages[status] ||
@@ -152,7 +152,10 @@ export function UpdateAppointmentForm({
                         );
                       }}
                     >
-                      <DoctorBadge doctorName={doctor.doctorName} />
+                      <UserBadge
+                        userName={doctor.doctorName}
+                        src={getFileUrl(doctor.avatarImage)}
+                      />
                     </CommandItem>
                   ))}
                 </CustomCommandSearch>

@@ -19,11 +19,7 @@ import {
   LoginFormSchema,
   LoginFormSchemaInputs,
 } from "@/lib/validations/login-form-schema";
-import {
-  completeOTPChallenge,
-  createOTPChallenge,
-  userLogin,
-} from "@/lib/actions/authActions";
+import { createOTPChallenge, userLogin } from "@/lib/actions/authActions";
 import { useState } from "react";
 
 export default function LoginForm() {
@@ -45,31 +41,27 @@ export default function LoginForm() {
   async function onSubmit(values: LoginFormSchemaInputs) {
     try {
       const res = await userLogin(values);
-
+      if (res.status === "validationError") return;
       if (res.status === "success") {
         router.replace(`/dashboard/patient`);
         return;
       }
+      console.log(res.error);
+      if (res.error.statusText !== "user_more_factors_required") {
+        form.setError("root", {
+          message: res.error.message,
+        });
+        return;
+      }
 
-      if (res.status === "NetworkError") {
-        console.log(res.error);
+      console.log("from challenge");
+      const challengeResponse = await createOTPChallenge();
+      if (challengeResponse.status === "success") {
+        const challengeId = challengeResponse.response.$id;
+        setChallengeId(challengeId);
+        setOpenOTPDialog(true);
 
-        if (res.error.statusText === "user_more_factors_required") {
-          console.log("from challenge");
-          const challenge = await createOTPChallenge();
-          if (challenge.status === "success") {
-            const challengeId = challenge.response.$id;
-            setChallengeId(challengeId);
-            setOpenOTPDialog(true);
-
-            return;
-          }
-          console.log("else", challenge.error);
-        } else {
-          form.setError("root", {
-            message: res.error.message,
-          });
-        }
+        return;
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -142,14 +134,16 @@ export default function LoginForm() {
           </Button>
         </form>
       </Form>
-      <OTPDialog
-        open={openOTPDialog}
-        setOpen={setOpenOTPDialog}
-        challengeId={challengeId}
-        title="Verify OTP"
-        submitBtnTitle="Verify"
-        desc="Please enter the OTP sent to your registered mobile number."
-      />
+      {challengeId && (
+        <OTPDialog
+          open={openOTPDialog}
+          setOpen={setOpenOTPDialog}
+          challengeId={challengeId}
+          title="Verify OTP"
+          submitBtnTitle="Verify"
+          desc="Please enter the OTP sent to your registered mobile number."
+        />
+      )}
     </>
   );
 }

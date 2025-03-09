@@ -17,6 +17,7 @@ export default {
         primary: "#131619",
         darkPrimary: "#0D0F10",
         secondary: "#24AE7C",
+        primaryGray: "#212328",
         danger: "#F24E43",
         tertiary: "#ABB8C4",
         neutral: "#76828D",

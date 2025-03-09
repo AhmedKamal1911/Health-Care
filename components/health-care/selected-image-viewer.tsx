@@ -1,12 +1,18 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type SelectedImageViewer = {
   url: string;
+  className?: string;
   onClose: () => void;
 };
-export const SelectedImageViewer = ({ url, onClose }: SelectedImageViewer) => {
+export const SelectedImageViewer = ({
+  url,
+  onClose,
+  className,
+}: SelectedImageViewer) => {
   return !url ? null : (
     <div className="relative">
       <Button
@@ -21,7 +27,7 @@ export const SelectedImageViewer = ({ url, onClose }: SelectedImageViewer) => {
         height={200}
         width={200}
         alt="selected image"
-        className="w-full h-[400px] object-cover rounded-md"
+        className={cn("w-full h-[400px] object-cover rounded-md", className)}
       />
     </div>
   );

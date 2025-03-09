@@ -22,6 +22,8 @@ export default function UpdateAppointmentModal({
   doctors: Doctor[];
 }) {
   const [open, setOpen] = useState(false);
+
+  console.log({ appointment, doctors });
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

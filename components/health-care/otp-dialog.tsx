@@ -34,12 +34,12 @@ export function OTPDialog({
     completeOTPChallenge,
     undefined
   );
-  const [OTPValue, setOTPValue] = useState("");
-  console.log({ OTPValue, state, challengeId });
-  const completeOTPChallengeAction = action.bind(undefined, {
-    challengeId,
-    OTP: OTPValue,
-  });
+  const [isOTPCompleted, setIsOTPCompleted] = useState(false);
+  console.log({ isOTPCompleted, state, challengeId });
+  // const completeOTPChallengeAction = action.bind(undefined, {
+  //   challengeId,
+  //   OTP: OTPValue,
+  // });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -65,12 +65,20 @@ export function OTPDialog({
             </span>
           )}
         </DialogHeader>
-        <form action={completeOTPChallengeAction}>
+        <form action={action}>
           <div className="my-[40px]">
-            <VerificationOTP onOTPComplete={setOTPValue} />
+            <VerificationOTP setIsCompleted={setIsOTPCompleted} />
+            <input
+              type="hidden"
+              hidden
+              name="challengeId"
+              value={challengeId}
+            />
           </div>
           <Button
-            disabled={isPending || !OTPValue || state?.status === "success"}
+            disabled={
+              isPending || !isOTPCompleted || state?.status === "success"
+            }
             className="w-full  text-[16px] text-white p-4 sm:p-6"
             type="submit"
           >

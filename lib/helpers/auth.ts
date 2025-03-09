@@ -14,7 +14,7 @@ export async function createLoginSession(jwt: string, expire: string) {
     httpOnly: true,
     expires: new Date(expire),
     path: "/",
-    secure: true,
+
     sameSite: "strict",
   });
 }

@@ -2,25 +2,28 @@ import { cn, generateTextFallback } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import CustomAvatar from "./custom-avatar";
 type Props = {
-  doctorName: string;
+  userName: string;
   src?: string;
   className?: string;
 };
-export default function DoctorBadge({
-  doctorName,
-  src = undefined,
+export default function UserBadge({
+  userName,
+  src = "https://github.com/shadcn.png",
   className,
 }: Props) {
+  console.log(userName);
   return (
-    <Badge className={cn("gap-2", className)}>
+    <Badge className={cn("gap-2 text-nowrap", className)}>
       <CustomAvatar
         src={src}
         fallback={
-          <span className="capitalize">{generateTextFallback(doctorName)}</span>
+          <span className="capitalize">
+            {generateTextFallback(userName ?? "test")}
+          </span>
         }
         alt="Doctor"
       />
-      {doctorName}
+      {userName ?? "test"}
     </Badge>
   );
 }

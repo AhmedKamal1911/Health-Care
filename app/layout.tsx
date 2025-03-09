@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import FileUploadBoxProvider from "@/components/contexts/file-upload-box";
@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 };
 
 // Configure Plus Jakarta Sans font with detailed fallback
-const jakartaSansFont = Plus_Jakarta_Sans({
+const poppins = Poppins({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700", "800"],
   fallback: [
-    "Plus Jakarta Sans Fallback",
+    "Poppins",
     "Arial", // Common web-safe font
     "Helvetica", // Popular sans-serif fallback
     "sans-serif", // Generic sans-serif fallback
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${jakartaSansFont.className} antialiased min-h-screen bg-primary`}
+        className={`${poppins.className} antialiased min-h-screen bg-primary`}
       >
         <ThemeProvider
           attribute="class"

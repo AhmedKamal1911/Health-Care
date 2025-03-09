@@ -1,4 +1,4 @@
-import { BUCKET_ID, storage } from "@/lib/appwrite";
+import { BUCKET_ID, createAdminClient } from "@/lib/appwrite";
 import { handleErrorMessage } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -7,6 +7,7 @@ export async function GET(
   { params }: { params: Promise<{ fileId: string }> }
 ) {
   const { fileId } = await params;
+  const { storage } = createAdminClient();
   try {
     const fileMeta = await storage.getFile(BUCKET_ID, fileId);
 
